@@ -1,4 +1,4 @@
-var html = require('fs').readFileSync(__dirname+'/static/index.html');
+var html = require('fs').readFileSync(__dirname+'/static/html/index.html');
 var path = require('path');
 var http = require('http');
 var fs = require('fs');
@@ -8,13 +8,9 @@ var app = express.createServer();
 
 // routing
 app.get('/', function (req, res) {
-    res.sendfile(__dirname + '/static/index.html');
+    res.sendfile(__dirname + '/static/html/index.html');
 });
 
-app.get('/room', function (req, res) {
-    res.sendfile(__dirname + '/static/room.html');
-});
- 
 app.use("/static", express.static(__dirname + '/static'));
 app.listen(8080);
 
