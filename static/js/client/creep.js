@@ -1,7 +1,17 @@
+//Server function wrapppers ------------------------
 now.client_create_creep = function(id, pic) {
     create_creep(id, game().x_start, game().y_start, 0, pic);
 }
 
+now.client_creep_reached_end = function(creep_id) {
+    creep_reached_end(creep_id);
+}
+
+now.client_destroy_creep = function(id) {
+    destroy_creep(id);
+}
+
+//Client functions -------------------
 var create_creep = function(id, x, y, cur_index, pic) {
     var creep = paper.image(pic, 
        parseFloat(x) * tile_size, parseFloat(y) * tile_size, 47, 47);
@@ -94,10 +104,6 @@ var creep_reached_end = function(creep_id) {
     decrement_lives();
 }
 
-now.client_creep_reached_end = function(creep_id) {
-    creep_reached_end(creep_id);
-}
-
 var destroy_creep = function(id) {
     try {
         if (creeps[id]) {
@@ -110,8 +116,5 @@ var destroy_creep = function(id) {
     }
 }
 
-now.client_destroy_creep = function(id) {
-    destroy_creep(id);
-}
 
 

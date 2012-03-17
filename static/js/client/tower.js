@@ -1,3 +1,53 @@
+//Server function wrappers------------
+var server_build_tower = function() {
+    now.buildTower(
+        this.getAttribute('x'), 
+        this.getAttribute('y'),
+        this.getAttribute('tower_type')
+    );
+}
+
+var server_upgrade_tower = function(){
+    now.upgradeTower(
+        this.getAttribute('x'),
+        this.getAttribute('y')
+    );
+}
+
+now.client_build_tower = function(success, x, y, type, new_gold) {
+    build_tower(success, x, y, type, new_gold); 
+}
+
+now.client_upgrade_tower = function(success, x, y, level, new_gold) {
+    upgrade_tower(success, x, y, level, new_gold);
+}
+
+now.client_tower_fire = function(tower_x, tower_y, creep_id) {
+    tower_fire(tower_x, tower_y, creep_id);
+}
+
+//client functions-----------
+var build_tower = function(success, x, y, type, new_gold) {
+    if (success) {
+        log('Successfully built tower: ' + type);
+        draw_tower(1, x, y);
+        update_gold(new_gold);
+        do_upgrade_tower_menu(map[x][y]);
+    } else {
+        log('Could not build tower.');
+    }
+}
+
+var upgrade_tower = function(success, x, y, level, new_gold) {
+    if (success) {
+        log('Successfully upgraded tower');
+        draw_tower(level, x, y);
+        update_gold(new_gold);
+    } else {
+        log('Could not upgrade tower.');
+    }
+}
+
 var do_build_tower_menu = function(tile) {
     $('#tower_panel').html('');
     var menu = $('#tower_panel').append(
@@ -34,42 +84,6 @@ var do_upgrade_tower_menu = function(tile) {
     }
 }
 
-var server_build_tower = function() {
-    now.buildTower(
-        this.getAttribute('x'), 
-        this.getAttribute('y'),
-        this.getAttribute('tower_type')
-    );
-}
-
-var server_upgrade_tower = function(){
-    now.upgradeTower(
-        this.getAttribute('x'),
-        this.getAttribute('y')
-    );
-}
-
-now.client_build_tower = function(success, x, y, type, new_gold) {
-    if (success) {
-        log('Successfully built tower: ' + type);
-        draw_tower(1, x, y);
-        update_gold(new_gold);
-        do_upgrade_tower_menu(map[x][y]);
-    } else {
-        log('Could not build tower.');
-    }
-}
-
-now.client_upgrade_tower = function(success, x, y, level, new_gold) {
-    if (success) {
-        log('Successfully upgraded tower');
-        draw_tower(level, x, y);
-        update_gold(new_gold);
-    } else {
-        log('Could not upgrade tower.');
-    }
-}
-
 var draw_tower = function(level, x, y) {
     if (map[x][y].td.tower != null) {
         map[x][y].td.tower.remove();
@@ -91,10 +105,6 @@ var select_tower = function(e) {
     if (map[this.x][this.y].td.tower != null) {
         do_upgrade_tower_menu(map[this.x][this.y]);
     }
-}
-
-now.client_tower_fire = function(tower_x, tower_y, creep_id) {
-    tower_fire(tower_x, tower_y, creep_id);
 }
 
 var tower_fire = function(tower_x, tower_y, creep_id) {
@@ -122,5 +132,3 @@ var draw_laser = function(x, y, cx, cy) {
                 'stroke-width': 3});
     return laser;
 }
-
-
